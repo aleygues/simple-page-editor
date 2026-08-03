@@ -1,0 +1,29 @@
+info:
+  name: Create user
+  type: http
+  seq: 1
+
+http:
+  method: POST
+  url: "{{api}}/api/users"
+  body:
+    type: json
+    data: |-
+      {
+        "email": "{{user1email}}",
+        "password": "{{user1password}}"
+      }
+  auth: inherit
+
+runtime:
+  scripts:
+    - type: before-request
+      code: |-
+        bru.setVar("user1email", bru.interpolate('{{$randomEmail}}').toLowerCase());
+        bru.setVar("user1password", bru.interpolate('{{$randomPassword}}-2026'));
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
