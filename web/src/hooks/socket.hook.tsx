@@ -1,6 +1,5 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { useMe } from "./me.hook";
-import toast from "react-hot-toast";
 
 const SocketContext = createContext<{
   send: (channel: string, message: any) => void;

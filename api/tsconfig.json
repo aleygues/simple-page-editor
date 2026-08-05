@@ -1,9 +1,11 @@
 {
   "compilerOptions": {
+    "rootDir": "./src",
+    "outDir": "./dist",
     "target": "esnext",
     "module": "nodenext",
     "strict": true,
-    "noEmit": true,
+    "noEmit": false,
     "jsx": "react",
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,

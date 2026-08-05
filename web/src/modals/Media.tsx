@@ -1,7 +1,6 @@
 import axios from "axios";
 import { Modal } from "../components/Modal";
 import type { Media, Page } from "../interfaces";
-import { useNavigate } from "react-router";
 import { useEffect, useState } from "react";
 import { useDropzone } from "react-dropzone";
 import { Row } from "../components/Row";
@@ -18,7 +17,6 @@ export function MediaModal(props: {
   isOpen: boolean;
   onMediaSelect?: (media: Media) => void;
 }) {
-  const navigate = useNavigate();
   const [media, setMedia] = useState<Media[]>();
 
   async function refetch() {
@@ -30,7 +28,7 @@ export function MediaModal(props: {
     refetch();
   }, []);
 
-  const { acceptedFiles, getRootProps, getInputProps } = useDropzone({
+  const { getRootProps, getInputProps } = useDropzone({
     onDrop: async (files) => {
       const form = new FormData();
       form.append("media", files[0]);

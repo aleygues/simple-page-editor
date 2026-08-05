@@ -1,7 +1,6 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import type { Page } from "../interfaces";
 import axios from "axios";
-import { useMe } from "./me.hook";
 
 const PagesContext = createContext<{
   pages: Page[] | undefined;
@@ -9,7 +8,6 @@ const PagesContext = createContext<{
 } | null>(null);
 
 export function PagesProvider(props: React.PropsWithChildren<unknown>) {
-  const { me } = useMe();
   const [pages, setPages] = useState();
 
   async function refetch() {

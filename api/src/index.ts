@@ -8,6 +8,8 @@ import { sendError } from "./utils/sendError";
 import { User, UserRole } from "./entities/User";
 import { datasource } from "./datasource";
 import * as argon2 from "argon2";
+import * as path from "path";
+import * as fs from "fs";
 
 const port = process.env.PORT || 3300;
 
@@ -44,10 +46,24 @@ async function main() {
     const app = express();
     app.use(express.json());
     app.use("/api", apiRouter);
-    // Default route
-    app.get("/", (req, res) => {
-      res.status(200).json({ message: "Hello World" });
-    });
+
+    // Serve static website from public folder if it exists (Vite/React app)
+    const publicPath = path.join(__dirname, "..", "public");
+    if (fs.existsSync(publicPath)) {
+      app.use(express.static(publicPath));
+
+      // For SPA routing: serve index.html for all unmatched routes
+      app.get("*all", (req, res) => {
+        console.log("HEE");
+        res.sendFile(path.join(publicPath, "index.html"));
+      });
+    } else {
+      // Default route
+      app.get("/", (req, res) => {
+        res.status(200).json({ message: "Hello World" });
+      });
+    }
+
     // 404 if needed
     app.use((req, res) => {
       sendError(res, 404, "not_found", ["not route matched"]);

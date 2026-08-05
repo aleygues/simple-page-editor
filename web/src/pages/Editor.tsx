@@ -1,5 +1,5 @@
 import CodeMirror, { type ReactCodeMirrorRef } from "@uiw/react-codemirror";
-import { markdown } from "@codemirror/lang-markdown";
+import { markdown, markdownLanguage } from "@codemirror/lang-markdown";
 import { useEffect, useRef, useState } from "react";
 import { androidstudio } from "@uiw/codemirror-theme-androidstudio";
 import { EditorTopbar } from "../components/EditorTopbar";
@@ -8,6 +8,25 @@ import type { Page, Version } from "../interfaces";
 import { useParams } from "react-router";
 import { CenteredContent } from "../components/CenteredContent";
 import { toast } from "react-hot-toast";
+import { CompletionContext } from "@codemirror/autocomplete";
+
+function myCompletions(context: CompletionContext) {
+  let word = context.matchBefore(/\w*/);
+  if (!word || (word.from == word.to && !context.explicit)) {
+    return null;
+  }
+  return {
+    from: word.from,
+    options: [
+      { label: "match", type: "keyword" },
+      { label: "hello", type: "variable", info: "(World)" },
+      { label: "magic", type: "text", apply: "⠁⭒*.✩.*⭒⠁", detail: "macro" },
+      { label: "Void", type: "keyword", apply: "<Void />", detail: "component" },
+      { label: "Image", type: "keyword", apply: '<Image src="" />', detail: "component" },
+      { label: "Section", type: "keyword", apply: "<Section>\n\n</Section>", detail: "component" },
+    ],
+  };
+}
 
 export function EditorPage() {
   const { id } = useParams();
@@ -74,7 +93,10 @@ export function EditorPage() {
         value={content}
         height="100%"
         style={{ height: "100%" }}
-        extensions={[markdown({})]}
+        extensions={[
+          markdown({}),
+          markdownLanguage.data.of({ autocomplete: myCompletions }),
+        ]}
         theme={androidstudio}
         onChange={setContent}
         ref={editorRef}

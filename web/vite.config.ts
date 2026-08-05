@@ -1,12 +1,12 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
-import wyw from "@wyw-in-js/vite";
+import linaria from "@wyw-in-js/vite";
 
-// https://vite.dev/config/
 export default defineConfig({
-  plugins: [react(), wyw()],
+  plugins: [react(), linaria()],
   build: {
-    outDir: "../test",
+    outDir: "./dist",
+    cssMinify: false,
   },
   server: {
     proxy: {

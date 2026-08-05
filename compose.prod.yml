@@ -1,0 +1,44 @@
+services:
+  app:
+    build:
+      context: .
+      target: main
+    ports:
+      - 3300:3300
+    environment:
+      # Node.js environment mode
+      - NODE_ENV=production
+
+      # Server configuration
+      - PORT=3300
+
+      # JWT Authentication - REQUIRED for the app to start
+      # Access token secret for signing JWT tokens
+      - JWT_SECRET=${JWT_SECRET}
+
+      # Default admin account
+      - ADMIN_EMAIL=${ADMIN_EMAIL}
+      - ADMIN_PASSWORD=${ADMIN_PASSWORD}
+      
+      # Duration for access token validity (e.g., "15m", "1h", "1d")
+      # - ACCESS_TOKEN_DURATION=15m
+      # Duration for refresh token validity (e.g., "7d", "30d")
+      # - REFRESH_TOKEN_DURATION=7d
+
+      # Database configuration
+      # Path to SQLite database file
+      # - DB_PATH=./data/db/database.sqlite
+
+      # File uploads configuration
+      # Path where uploaded files will be stored
+      # - UPLOADS_PATH=./uploads
+
+      # Logging configuration
+      # Log level filter: ERROR, WARN, INFO, DEBUG
+      # - LOG_LEVEL=DEBUG
+
+      # Cache configuration for image processing
+      # Path to cache directory for processed images
+      # - CACHE_PATH=./cache
+      # Cache duration in hours (default: 24 hours)
+      # - CACHE_DURATION=24
