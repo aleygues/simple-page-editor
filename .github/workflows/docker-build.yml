@@ -33,3 +33,6 @@ jobs:
           file: ./Dockerfile
           tags: ghcr.io/${{ github.repository }}:latest
           push: true
+
+      - name: Notify update endpoint
+        run: curl -X POST "${{ secrets.UPDATE_ENDPOINT }}"

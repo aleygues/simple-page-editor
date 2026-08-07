@@ -42,3 +42,7 @@ services:
       # - CACHE_PATH=./cache
       # Cache duration in hours (default: 24 hours)
       # - CACHE_DURATION=24
+
+      # Favicon configuration
+      # Path to favicon file
+      # - FAVICON_PATH=./public/favicon.ico

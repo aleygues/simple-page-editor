@@ -42,6 +42,10 @@ services:
       # - CACHE_PATH=./cache
       # Cache duration in hours (default: 24 hours)
       # - CACHE_DURATION=24
+
+      # Favicon configuration
+      # Path to favicon file
+      - FAVICON_PATH=/api/media/3?width=128&fit=contain
     volumes:
       - ./api/src:/app/src
       - ./app-data:/app/app-data

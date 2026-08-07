@@ -23,7 +23,7 @@ export function PageTopbar(props: { page: Page | null }) {
       <PageEditorModal
         isOpen={isEditorOpen}
         onClose={() => setIsEditorOpen(false)}
-        page={props.page}
+        page={null}
       />
       <Toolbar className="dark">
         {pages && pages.length > 0 ? (

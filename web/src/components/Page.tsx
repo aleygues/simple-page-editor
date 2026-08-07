@@ -1,12 +1,12 @@
 import { styled } from "@linaria/react";
 
 export const Page = styled.div`
+  flex: 1;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  min-height: 100vh;
-  padding: var(--padding);
+  width: 100%;
   background-color: var(--background-color);
   color: var(--text-color);
+  overflow: auto;
+  justify-content: stretch;
 `;

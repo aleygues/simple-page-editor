@@ -41,6 +41,7 @@ export function PagePage() {
   useEffect(() => {
     if (page) {
       setContent(evaluateSync(page.currentVersion.content, runtime));
+      document.title = page.title;
     }
   }, [page]);
 

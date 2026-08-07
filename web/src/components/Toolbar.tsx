@@ -4,6 +4,7 @@ export const Toolbar = styled.div`
   height: 58px;
   max-height: 58px;
   width: 100%;
+  flex-shrink: 0;
   background-color: var(--toolbar-background-color);
   color: var(--toolbar-text-color);
   display: flex;

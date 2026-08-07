@@ -147,6 +147,12 @@ A modern, markdown-powered page editor with versioning, media management, and mu
 | GET    | `/api/media/:id` | Get media file | Public       |
 | DELETE | `/api/media/:id` | Delete media   | Contributor+ |
 
+### Favicon
+
+| Method | Endpoint            | Description      | Access |
+| ------ | ------------------- | ---------------- | ------ |
+| GET    | `/api/favicon/`     | Get favicon file | Public |
+
 ## Project Structure
 
 ```
@@ -163,7 +169,8 @@ simple-page-editor/
 │   │   │   ├── medias.ts
 │   │   │   ├── pages.ts
 │   │   │   ├── users.ts
-│   │   │   └── versions.ts
+│   │   │   ├── versions.ts
+│   │   │   └── favicon.ts
 │   │   ├── controllers/          # Route controllers
 │   │   ├── middlewares/         # Express middlewares
 │   │   ├── services/            # Background services
@@ -208,6 +215,7 @@ simple-page-editor/
 | `LOG_LEVEL`              | No       | INFO                          | Logging level (ERROR, WARN, INFO, DEBUG)        |
 | `ACCESS_TOKEN_DURATION`  | No       | 15m                           | Access token validity duration                  |
 | `REFRESH_TOKEN_DURATION` | No       | 7d                            | Refresh token validity duration                 |
+| `FAVICON_PATH`           | No       | ./public/favicon.ico          | Path to favicon file for the API endpoint        |
 
 ## Getting Started
 

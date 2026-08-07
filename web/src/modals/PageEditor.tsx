@@ -23,15 +23,29 @@ export function PageEditorModal(props: {
   async function onSubmit(event: React.SubmitEvent<HTMLFormElement>) {
     event.preventDefault();
 
-    try {
-      const { data } = await axios.post("/api/pages", {
-        title,
-        slug,
-        description,
-      });
-      navigate(`/editor/${data.id}`);
-    } catch (error) {
-      toast.error("Unable to create your page");
+    if (props.page) {
+      try {
+        await axios.patch(`/api/pages/${props.page.id}`, {
+          title,
+          slug,
+          description,
+        });
+        props.onClose();
+        toast.success("Page updated successfully");
+      } catch (error) {
+        toast.error("Unable to update your page");
+      }
+    } else {
+      try {
+        const { data } = await axios.post("/api/pages", {
+          title,
+          slug,
+          description,
+        });
+        navigate(`/editor/${data.id}`);
+      } catch (error) {
+        toast.error("Unable to create your page");
+      }
     }
   }
 
