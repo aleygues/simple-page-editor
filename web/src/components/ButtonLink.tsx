@@ -1,5 +1,5 @@
 import { styled } from "@linaria/react";
-import { useEffect, useMemo } from "react";
+import { useMemo } from "react";
 import { Link, useLocation } from "react-router";
 
 const Component = styled(Link)<{

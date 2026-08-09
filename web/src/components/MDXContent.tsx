@@ -39,7 +39,7 @@ export function MDXContent(props: { content: string }) {
       ...(components
         ? components?.reduce(
             (components, component) => {
-              components[component.tag] = (props) => (
+              components[component.tag] = () => (
                 <MDXContent content={component.currentVersion.content} />
               );
               return components;
