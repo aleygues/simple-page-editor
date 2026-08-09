@@ -7,7 +7,6 @@ import { sendError } from "../utils/sendError";
 
 class PagesController {
   async create(req: Request, res: Response): Promise<void> {
-    console.log(req.validatedEntity);
     const newPage = await (req.validatedEntity as PageCreateInput).getEntity(
       req.user as User,
     );

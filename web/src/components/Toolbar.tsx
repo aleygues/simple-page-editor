@@ -5,8 +5,8 @@ export const Toolbar = styled.div`
   max-height: 58px;
   width: 100%;
   flex-shrink: 0;
-  background-color: var(--toolbar-background-color);
-  color: var(--toolbar-text-color);
+  background-color: var(--background-color);
+  color: var(--text-color);
   display: flex;
   align-items: center;
   flex-direction: row;

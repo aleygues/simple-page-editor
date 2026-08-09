@@ -8,6 +8,7 @@ import type { Page } from "../interfaces";
 import { useNavigate } from "react-router";
 import toast from "react-hot-toast";
 import { useEffect, useState } from "react";
+import { FiCheck } from "react-icons/fi";
 
 export function PageEditorModal(props: {
   page?: Page | null;
@@ -89,6 +90,7 @@ export function PageEditorModal(props: {
           />
         </Label>
         <Button type="submit" fill="solid">
+          <FiCheck />
           {props.page ? "Edit" : "Create"}
         </Button>
       </Form>

@@ -56,7 +56,7 @@ export function PageTopbar(props: { page: Page | null }) {
         <Void />
         {props.page && (
           <>
-            <ButtonLink fill="clear" to={`/editor/${props.page.id}`}>
+            <ButtonLink fill="clear" to={`/editor/pages/${props.page.id}`}>
               <FiEdit /> Edit
             </ButtonLink>
             <Button fill="clear">

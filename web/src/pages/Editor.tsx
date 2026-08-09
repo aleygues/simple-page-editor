@@ -5,7 +5,7 @@ import { useEffect, useRef, useState } from "react";
 import { androidstudio } from "@uiw/codemirror-theme-androidstudio";
 import { EditorTopbar } from "../components/EditorTopbar";
 import axios from "axios";
-import type { Page, Version } from "../interfaces";
+import type { Component, Page, Version } from "../interfaces";
 import { useParams } from "react-router";
 import { CenteredContent } from "../components/CenteredContent";
 import { toast } from "react-hot-toast";
@@ -143,16 +143,23 @@ function myCompletions(context: CompletionContext) {
 }
 
 export function EditorPage() {
-  const { id } = useParams();
+  const { pageId, componentId } = useParams();
   const [page, setPage] = useState<undefined | Page>();
+  const [component, setComponent] = useState<undefined | Component>();
   const [content, setContent] = useState<string>();
   const [version, setVersion] = useState<Version | null>(null);
   const editorRef = useRef<ReactCodeMirrorRef>(null);
 
-  async function fetchPage() {
-    const { data } = await axios.get(`/api/pages/${id}`);
-    setPage(data);
-    setContent(data.currentVersion.content);
+  async function fetchItem() {
+    if (pageId) {
+      const { data } = await axios.get(`/api/pages/${pageId}`);
+      setPage(data);
+      setContent(data.currentVersion.content);
+    } else if (componentId) {
+      const { data } = await axios.get(`/api/components/${componentId}`);
+      setComponent(data);
+      setContent(data.currentVersion.content);
+    }
   }
 
   async function onSave() {
@@ -168,7 +175,7 @@ export function EditorPage() {
       toast.success("Version updated successfully");
     } else {
       const { data } = await axios.post<Version>(`/api/versions`, {
-        page: { id: page?.id },
+        [pageId ? "page" : "component"]: { id: pageId || componentId },
         content,
       });
       setVersion(data);
@@ -177,9 +184,8 @@ export function EditorPage() {
   }
 
   useEffect(() => {
-    fetchPage();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [id]);
+    fetchItem();
+  }, [pageId, componentId]);
 
   async function onMediaSelect(media: { id: number }) {
     if (editorRef.current?.view) {
@@ -193,7 +199,19 @@ export function EditorPage() {
     }
   }
 
-  if (page === undefined) {
+  async function onComponentSelect(component: { tag: string }) {
+    if (editorRef.current?.view) {
+      editorRef.current?.view.dispatch({
+        changes: {
+          from: editorRef.current?.view.state.selection.main.from,
+          to: editorRef.current?.view.state.selection.main.to,
+          insert: `<${component.tag}>\n\n</${component.tag}>`,
+        },
+      });
+    }
+  }
+
+  if (page === undefined && component === undefined) {
     return (
       <CenteredContent>
         <p>Loading...</p>
@@ -206,8 +224,10 @@ export function EditorPage() {
       <PageComponent>
         <EditorTopbar
           page={page}
+          component={component}
           onSave={onSave}
           onMediaSelect={onMediaSelect}
+          onComponentSelect={onComponentSelect}
         />
         <CodeMirror
           value={content}

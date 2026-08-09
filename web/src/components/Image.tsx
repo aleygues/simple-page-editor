@@ -10,11 +10,11 @@ type Props = {
 };
 
 const Img = styled.img<Props>`
-  ${({ fit }) => (fit ? `object-fit: ${fit};` : "")}
-  ${({ width }) => (width ? `width: ${width};` : "")}
-  ${({ height }) => (height ? `height: ${height};` : "")}
-  ${({ borderRadius }) =>
-    borderRadius ? "border-radius: var(--border-radius);" : ""}
+  object-fit: ${({ fit }) => (fit ? `${fit}` : "initial")};
+  width: ${({ width }) => (width ? `${width}` : "auto")};
+  height: ${({ height }) => (height ? `${height}` : "auto")};
+  border-radius: ${({ borderRadius }) =>
+    borderRadius ? "var(--border-radius)" : "none"};
   overflow: hidden;
 `;
 

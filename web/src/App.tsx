@@ -13,7 +13,13 @@ function App() {
       <Toaster position="bottom-right" />
       <Routes>
         {me === null && <Route path="/signin" element={<SigninPage />} />}
-        {me && <Route path="/editor/:id" element={<EditorPage />} />}
+        {me && <Route path="/editor/pages/:pageId" element={<EditorPage />} />}
+        {me && (
+          <Route
+            path="/editor/components/:componentId"
+            element={<EditorPage />}
+          />
+        )}
         <Route path="/:pageSlug" element={<PagePage />} />
         <Route path="/" element={<PagePage />} />
       </Routes>

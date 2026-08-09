@@ -10,8 +10,10 @@ import { Row } from "./Row";
 import { Image } from "./Image";
 import { Section } from "./Section";
 import { Main } from "./Main";
+import { Banner } from "./Banner";
 
 export const customComponents = {
+  Banner,
   Page,
   ButtonLink,
   CenteredContent,

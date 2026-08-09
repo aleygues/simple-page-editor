@@ -12,6 +12,14 @@ export interface Page {
   currentVersion: Version;
 }
 
+export interface Component {
+  id: number;
+  tag: string;
+  currentVersion: Version;
+  createdAt: string;
+  createdBy: User;
+}
+
 export interface Version {
   id: number;
   content: string;

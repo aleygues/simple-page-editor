@@ -8,7 +8,7 @@ export const CenteredContainer = styled.div`
   align-items: center;
   justify-content: stretch;
   padding: var(--padding);
-  background-color: var(--container-background-color);
+  background-color: var(--background-color);
   color: var(--text-color);
   border-radius: var(--border-radius);
 `;

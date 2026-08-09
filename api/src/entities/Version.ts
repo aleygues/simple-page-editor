@@ -10,11 +10,12 @@ import {
   UpdateDateColumn,
 } from "typeorm";
 import { User } from "./User";
-import { IsDate, MinLength, ValidateNested } from "class-validator";
+import { IsOptional, MinLength, ValidateNested } from "class-validator";
 import { Page } from "./Page";
 import { CreateInput, UpdateInput } from "../utils/Input";
 import { Relation } from "./Relation";
 import { Type } from "class-transformer";
+import { Component } from "./Component";
 
 @Entity()
 export class Version extends BaseEntity {
@@ -28,6 +29,10 @@ export class Version extends BaseEntity {
   @ManyToOne(() => Page, (page) => page.versions)
   @JoinColumn()
   page!: Page;
+
+  @ManyToOne(() => Component, (component) => component.versions)
+  @JoinColumn()
+  component!: Component;
 
   @CreateDateColumn()
   createdAt!: Date;
@@ -47,20 +52,38 @@ export class Version extends BaseEntity {
       await Page.update(this.page.id, { currentVersion: this });
     }
   }
+
+  @AfterInsert()
+  async updateComponentCurrentVersion() {
+    if (this.component) {
+      await Component.update(this.component.id, { currentVersion: this });
+    }
+  }
 }
 
 export class VersionCreateInput extends CreateInput<Version> {
   @MinLength(3)
   content!: string;
 
-  @ValidateNested()
-  @Type(() => Relation)
+  @IsOptional()
   page!: Relation;
+
+  @IsOptional()
+  component!: Relation;
 
   async getEntity(currentUser: User) {
     const newVersion = new Version();
     newVersion.content = this.content;
-    newVersion.page = await Page.findOneOrFail({ where: { id: this.page.id } });
+    if (this.page?.id) {
+      newVersion.page = await Page.findOneOrFail({
+        where: { id: this.page.id },
+      });
+    }
+    if (this.component?.id) {
+      newVersion.component = await Component.findOneOrFail({
+        where: { id: this.component.id },
+      });
+    }
     newVersion.createdBy = currentUser;
     newVersion.updatedBy = currentUser;
     return newVersion;

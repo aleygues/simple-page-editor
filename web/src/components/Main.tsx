@@ -13,4 +13,5 @@ export const Main = styled.main<Props>`
   justify-content: stretch;
   margin: auto;
   max-width: var(--max-width);
+  padding: var(--padding) 0px;
 `;

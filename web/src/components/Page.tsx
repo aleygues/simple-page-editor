@@ -4,6 +4,7 @@ export const Page = styled.div`
   flex: 1;
   display: flex;
   flex-direction: column;
+  align-items: flex-start;
   width: 100%;
   background-color: var(--background-color);
   color: var(--text-color);

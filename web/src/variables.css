@@ -1,4 +1,11 @@
 :root {
+  --color-primary: #155a9e;
+  --color-primary-shade: #1a3f65;
+  --color-primary-contrast: #ffffff;
+  --color-secondary: #da2e33;
+  --color-secondary-shade: #b3262c;
+  --color-secondary-contrast: #ffffff;
+
   /* Font */
   --font-family: Inter, Arial;
   --font-size: 14px;
@@ -11,12 +18,8 @@
   --gap: 8px;
   --margin: 16px;
   --padding: 16px;
-  --container-background-color: #ffffff;
+  --background-color: #ffffff;
   --text-color: #4d4d4d;
-
-  /* Toolbar */
-  --toolbar-background-color: #08060d;
-  --toolbar-text-color: #ffffff;
 
   /* Input */
   --input-border-radius: 8px;
@@ -29,35 +32,78 @@
   --input-color: var(--text-color);
 
   /* Button */
-  --button-background-color: var(--toolbar-background-color);
-  --button-hover-background-color: #323232;
-  --button-color: white;
+  --button-background-color: var(--color-primary);
+  --button-hover-background-color: var(--color-primary-shade);
+  --clear-button-hover-background-color: var(--input-hover-background-color);
+  --button-text-color: var(--color-primary-contrast);
 
   font-family: var(--font-family);
 
   @media (max-width: 1024px) {
     font-size: 16px;
   }
+
+  a {
+    text-decoration: none;
+    color: var(--color-primary);
+
+    &:hover {
+      color: var(--color-primary-shade);
+    }
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    padding: var(--padding) 0px;
+    margin: 0px;
+  }
+
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    border: 1px solid var(--input-hover-background-color);
+
+    th,
+    td {
+      border: 1px solid var(--input-hover-background-color);
+      padding: var(--padding);
+    }
+  }
 }
 
 .dark {
-  & > * {
-    --container-background-color: #ffffff;
-    --text-color: #b6b6b6;
+  --color-primary: #155a9e;
+  --color-primary-shade: #1a3f65;
+  --color-primary-contrast: #ffffff;
+  --color-secondary: #da2e33;
+  --color-secondary-shade: #b3262c;
+  --color-secondary-contrast: #ffffff;
 
-    /* Toolbar */
-    --toolbar-background-color: #ffffff;
-    --toolbar-text-color: #000000;
+  --background-color: var(--color-primary);
+  --text-color: var(--color-primary-contrast);
 
-    /* Input */
-    --input-background-color: transparent;
-    --input-hover-background-color: #161616;
-    --input-color: var(--text-color);
+  /* Toolbar */
+  --toolbar-background-color: #ffffff;
+  --toolbar-text-color: #000000;
 
-    /* Button */
-    --button-background-color: var(--toolbar-background-color);
-    --button-hover-background-color: #323232;
-    --button-color: var(--text-color);
+  /* Input */
+  --input-background-color: transparent;
+  --input-hover-background-color: var(--color-primary-shade);
+  --input-color: var(--text-color);
+
+  /* Button */
+  --button-background-color: var(--color-primary-contrast);
+  --button-hover-background-color: var(--color-primary);
+  --clear-button-hover-background-color: var(--color-primary-shade);
+  --button-text-color: var(--color-primary);
+
+  a {
+    text-decoration: none;
+    color: var(--color-primary-contrast);
   }
 }
 

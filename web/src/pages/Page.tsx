@@ -1,28 +1,14 @@
-import { evaluateSync } from "@mdx-js/mdx";
-import type { MDXComponents, MDXModule } from "mdx/types.js";
-import * as runtime from "react/jsx-runtime";
-import { customComponents } from "../components";
 import { useParams } from "react-router";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { PageTopbar } from "../components/PageTopbar";
 import type { Page } from "../interfaces";
 import { CenteredContent } from "../components/CenteredContent";
-
-const components: MDXComponents = {
-  em(properties) {
-    return <i {...properties} />;
-  },
-  strong(properties) {
-    return <strong {...properties} />;
-  },
-  ...customComponents,
-};
+import { MDXContent } from "../components/MDXContent";
 
 export function PagePage() {
   const { pageSlug } = useParams();
   const [page, setPage] = useState<undefined | null | Page>();
-  const [Content, setContent] = useState<undefined | MDXModule>();
 
   async function fetchPage() {
     try {
@@ -40,7 +26,6 @@ export function PagePage() {
 
   useEffect(() => {
     if (page) {
-      setContent(evaluateSync(page.currentVersion.content, runtime));
       document.title = page.title;
     }
   }, [page]);
@@ -52,8 +37,8 @@ export function PagePage() {
   return (
     <>
       <PageTopbar page={page} />
-      {Content ? (
-        <Content.default components={components} />
+      {page ? (
+        <MDXContent content={page.currentVersion.content} />
       ) : (
         <CenteredContent>
           <p>No content</p>

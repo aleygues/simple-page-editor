@@ -10,5 +10,5 @@ export const Row = styled.div<Props>`
   flex-direction: row;
   gap: var(--gap);
   align-items: center;
-  ${({ center }) => (center ? "justify-content: center;" : "")}
+  justify-content: ${({ center }) => (center ? "center" : "flex-start")};
 `;

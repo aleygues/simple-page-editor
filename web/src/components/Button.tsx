@@ -9,7 +9,9 @@ export const Button = styled.button<{ fill?: "clear" | "solid" }>`
   background-color: ${({ fill }) =>
     fill === "solid" ? "var(--button-background-color)" : "transparent"};
   color: ${({ fill }) =>
-    fill === "solid" ? "var(--button-color)" : "var(--button-color)"};
+    fill === "solid"
+      ? "var(--button-text-color)"
+      : "var(--button-background-color)"};
   border-radius: var(--input-border-radius);
   padding: var(--input-padding);
   cursor: pointer;
@@ -22,7 +24,15 @@ export const Button = styled.button<{ fill?: "clear" | "solid" }>`
   }
 
   &:hover,
-  &:focus {
-    background-color: var(--button-hover-background-color);
+  &:focus,
+  &[isActive="true"] {
+    background-color: ${({ fill }) =>
+      fill === "solid"
+        ? "var(--button-hover-background-color)"
+        : "var(--clear-button-hover-background-color)"};
+    color: ${({ fill }) =>
+      fill === "solid"
+        ? "var(--button-text-color)"
+        : "var(--button-background-color)"};
   }
 `;
