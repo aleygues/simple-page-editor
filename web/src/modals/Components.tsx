@@ -49,9 +49,11 @@ export function ComponentsModal(props: {
           {components && components?.length === 0 && <p>No components found</p>}
           {components?.map((component) => (
             <Row>
-              <div>
-                <h3>{component.tag}</h3>
-                <p>
+              <div className="truncate-container">
+                <p className="truncate">
+                  <strong>{component.tag}</strong>
+                </p>
+                <p className="truncate">
                   Created by {component.createdBy.email} on{" "}
                   {format(new Date(component.createdAt), "PPP")}
                 </p>

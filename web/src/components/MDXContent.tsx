@@ -19,17 +19,28 @@ const staticComponents: MDXComponents = {
 export function MDXContent(props: { content: string }) {
   const { components } = useComponents();
   const [Content, setContent] = useState<undefined | MDXModule>();
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     if (props.content) {
-      setContent(
-        evaluateSync(props.content, {
-          remarkPlugins: [remarkGfm],
-          jsx: runtime.jsx,
-          jsxs: runtime.jsxs,
-          Fragment: runtime.Fragment,
-        }),
-      );
+      try {
+        setContent(
+          evaluateSync(props.content, {
+            remarkPlugins: [remarkGfm],
+            jsx: runtime.jsx,
+            jsxs: runtime.jsxs,
+            Fragment: runtime.Fragment,
+          }),
+        );
+        setError(null);
+      } catch (err) {
+        const message =
+          import.meta.env.DEV
+            ? `Invalid MDX content: ${err instanceof Error ? err.message : String(err)}`
+            : "Invalid MDX content";
+        setError(message);
+        setContent(undefined);
+      }
     }
   }, [props.content]);
 
@@ -51,9 +62,21 @@ export function MDXContent(props: { content: string }) {
     [components],
   );
 
+  if (error) {
+    return <p style={{ color: "red" }}>{error}</p>;
+  }
+
   if (!Content) {
     return null;
   } else {
-    return <Content.default components={editorComponents} />;
+    try {
+      return <Content.default components={editorComponents} />;
+    } catch (err) {
+      const message =
+        import.meta.env.DEV
+          ? `Invalid MDX content: ${err instanceof Error ? err.message : String(err)}`
+          : "Invalid MDX content";
+      return <p style={{ color: "red" }}>{message}</p>;
+    }
   }
 }

@@ -46,6 +46,10 @@ services:
       # Favicon configuration
       # Path to favicon file
       - FAVICON_PATH=/api/media/3?width=128&fit=contain
+      
+      # Frontend URL for email templates
+      - FRONTEND_URL=http://localhost:5173
     volumes:
       - ./api/src:/app/src
+      - ./api/emails:/app/emails
       - ./app-data:/app/app-data

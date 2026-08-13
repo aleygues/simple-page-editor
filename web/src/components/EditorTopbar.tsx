@@ -24,6 +24,8 @@ export function EditorTopbar(props: {
   onSave: () => void;
   onMediaSelect?: (media: Media) => void;
   onComponentSelect?: (component: Component) => void;
+  hasUnsavedChanges?: boolean;
+  onNavigateAway?: () => void;
 }) {
   const { me } = useMe();
   const navigate = useNavigate();
@@ -72,13 +74,28 @@ export function EditorTopbar(props: {
         {props.page && (
           <Button
             fill="clear"
-            onClick={() => navigate(`/${props.page?.slug}`, { replace: true })}
+            onClick={() => {
+              if (props.hasUnsavedChanges && props.onNavigateAway) {
+                props.onNavigateAway();
+              } else {
+                navigate(`/${props.page?.slug}`, { replace: true });
+              }
+            }}
           >
             <FiArrowLeft /> Back
           </Button>
         )}
         {props.component && (
-          <Button fill="clear" onClick={() => window.close()}>
+          <Button
+            fill="clear"
+            onClick={() => {
+              if (props.hasUnsavedChanges && props.onNavigateAway) {
+                props.onNavigateAway();
+              } else {
+                window.close();
+              }
+            }}
+          >
             <FiX /> Close
           </Button>
         )}

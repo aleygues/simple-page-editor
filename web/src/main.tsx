@@ -6,17 +6,20 @@ import { MeProvider } from "./hooks/me.hook.tsx";
 import { PagesProvider } from "./hooks/pages.hook.tsx";
 import { SocketProvider } from "./hooks/socket.hook.tsx";
 import { ComponentsProvider } from "./hooks/components.hook.tsx";
+import { HelmetProvider } from "react-helmet-async";
 
 createRoot(document.getElementById("root")!).render(
-  <BrowserRouter>
-    <MeProvider>
-      <PagesProvider>
-        <ComponentsProvider>
-          <SocketProvider>
-            <App />
-          </SocketProvider>
-        </ComponentsProvider>
-      </PagesProvider>
-    </MeProvider>
-  </BrowserRouter>,
+  <HelmetProvider>
+    <BrowserRouter>
+      <MeProvider>
+        <PagesProvider>
+          <ComponentsProvider>
+            <SocketProvider>
+              <App />
+            </SocketProvider>
+          </ComponentsProvider>
+        </PagesProvider>
+      </MeProvider>
+    </BrowserRouter>
+  </HelmetProvider>,
 );

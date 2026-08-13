@@ -1,10 +1,228 @@
 <!doctype html>
-<html lang="en">
+<html lang="fr">
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" href="/api/favicon/" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Simple page editor</title>
+
+    <!-- Basic SEO -->
+    <title>ASUL Ultimate - Club d'Ultimate Frisbee et Disc Golf à Lyon/Villeurbanne</title>
+    <meta
+      name="description"
+      content="ASUL Ultimate est un club sportif amateur d'Ultimate Frisbee et de Disc-Golf basé à Lyon et Villeurbanne. Fondé en 2001 sous le nom Moustix, nous proposons des entraînements pour tous niveaux, des équipes compétitives et une section jeunes dès 8 ans."
+    />
+    <meta
+      name="keywords"
+      content="Ultimate Frisbee, Disc Golf, club Lyon, club Villeurbanne, sport étudiant, ASUL, Moustix, Ultimate mixte, sport sans contact, auto-arbitré, fair-play"
+    />
+    <meta name="author" content="ASUL Ultimate" />
+
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://asul-ultimate.org/" />
+
+    <!-- Robots -->
+    <meta name="robots" content="index, follow" />
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://asul-ultimate.org/" />
+    <meta
+      property="og:title"
+      content="ASUL Ultimate - Club d'Ultimate Frisbee et Disc Golf à Lyon/Villeurbanne"
+    />
+    <meta
+      property="og:description"
+      content="ASUL Ultimate est un club sportif amateur d'Ultimate Frisbee et de Disc-Golf basé à Lyon et Villeurbanne. Fondé en 2001, nous accueillons débutants et confirmés pour une pratique loisir ou compétitive."
+    />
+    <meta property="og:site_name" content="ASUL Ultimate" />
+    <meta
+      property="og:image"
+      content="https://asul-ultimate.org/api/favicon/"
+    />
+    <meta property="og:locale" content="fr_FR" />
+    <meta property="og:street_address" content="70 Rue Docteur Rollet" />
+    <meta property="og:locality" content="Villeurbanne" />
+    <meta property="og:postal_code" content="69100" />
+    <meta property="og:country_name" content="France" />
+    <meta property="og:email" content="contact@asul-ultimate.org" />
+    <meta property="og:phone_number" content="+33666268408" />
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta
+      name="twitter:title"
+      content="ASUL Ultimate - Club d'Ultimate Frisbee et Disc Golf à Lyon/Villeurbanne"
+    />
+    <meta
+      name="twitter:description"
+      content="Club sportif amateur d'Ultimate Frisbee et Disc-Golf à Lyon/Villeurbanne. Environ 100 licenciés, équipes compétitives et pratique loisir pour tous niveaux."
+    />
+    <meta
+      name="twitter:image"
+      content="https://asul-ultimate.org/api/favicon/"
+    />
+    <meta name="twitter:site" content="@asul_ultimate" />
+    <meta name="twitter:creator" content="@asul_ultimate" />
+
+    <!-- Theme Color -->
+    <meta name="theme-color" content="#ffffff" />
+
+    <!-- Application Name -->
+    <meta name="application-name" content="ASUL Ultimate" />
+
+    <!-- Additional SEO Meta Tags -->
+    <meta name="geo.region" content="FR-69" />
+    <meta name="geo.placename" content="Villeurbanne" />
+    <meta name="geo.position" content="45.774722;4.872222" />
+    <meta name="ICBM" content="45.774722, 4.872222" />
+    
+    <!-- Organization Schema -->
+    <meta itemprop="name" content="ASUL Ultimate" />
+    <meta itemprop="description" content="Club sportif amateur d'Ultimate Frisbee et de Disc-Golf basé à Lyon et Villeurbanne" />
+    <meta itemprop="address" content="70 Rue Docteur Rollet, 69100 Villeurbanne, France" />
+    <meta itemprop="telephone" content="+33666268408" />
+    <meta itemprop="email" content="contact@asul-ultimate.org" />
+    <meta itemprop="foundingDate" content="2001" />
+    <meta itemprop="sameAs" content="https://www.facebook.com/AsulUltimateLyon/" />
+    <meta itemprop="sameAs" content="https://www.instagram.com/lyon_asul_ultimate/" />
+    <meta itemprop="sameAs" content="https://www.asul-ultimate.org/" />
+
+    <!-- Business/Organization structured data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "SportsClub",
+      "name": "ASUL Ultimate",
+      "alternateName": ["Moustix", "ASUL Ultimate Lyon"],
+      "description": "Club sportif amateur d'Ultimate Frisbee et de Disc-Golf basé à Lyon et Villeurbanne. Fondé en 2001, affilié à l'ASUL (Association des Sports Universitaires Lyonnais).",
+      "foundingDate": "2001",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "70 Rue Docteur Rollet",
+        "addressLocality": "Villeurbanne",
+        "postalCode": "69100",
+        "addressCountry": "FR"
+      },
+      "telephone": "+33666268408",
+      "email": "contact@asul-ultimate.org",
+      "url": "https://www.asul-ultimate.org/",
+      "logo": "https://asul-ultimate.org/api/favicon/",
+      "sameAs": [
+        "https://www.facebook.com/AsulUltimateLyon/",
+        "https://www.instagram.com/lyon_asul_ultimate/",
+        "https://www.instagram.com/asulultimate/"
+      ],
+      "memberOf": {
+        "@type": "Organization",
+        "name": "ASUL - Association des Sports Universitaires Lyonnais",
+        "foundingDate": "1935"
+      },
+      "sport": ["Ultimate Frisbee", "Disc Golf"],
+      "numberOfEmployees": 0,
+      "numberOfMembers": 100,
+      "openingHours": "Mo,Tu,We,Th,Fr,Sa,Su",
+      "hasMap": "https://www.google.com/maps/place/70+Rue+Docteur+Rollet,+69100+Villeurbanne,+France",
+      "geo": {
+        "@type": "GeoCoordinates",
+        "latitude": 45.774722,
+        "longitude": 4.872222
+      }
+    }
+    </script>
+    
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "ASUL Ultimate",
+      "url": "https://www.asul-ultimate.org/",
+      "sameAs": [
+        "https://www.facebook.com/AsulUltimateLyon/",
+        "https://www.instagram.com/lyon_asul_ultimate/",
+        "https://www.instagram.com/asulultimate/"
+      ]
+    }
+    </script>
+    
+    <!-- Place structured data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Place",
+      "name": "ASUL Ultimate",
+      "description": "Club d'Ultimate Frisbee et Disc Golf",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "70 Rue Docteur Rollet",
+        "addressLocality": "Villeurbanne",
+        "postalCode": "69100",
+        "addressCountry": "France"
+      },
+      "geo": {
+        "@type": "GeoCoordinates",
+        "latitude": 45.774722,
+        "longitude": 4.872222
+      },
+      "hasMap": "https://www.google.com/maps/place/70+Rue+Docteur+Rollet,+69100+Villeurbanne,+France"
+    }
+    </script>
+
+    <!-- LocalBusiness structured data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "LocalBusiness",
+      "name": "ASUL Ultimate",
+      "@id": "https://www.asul-ultimate.org/#organization",
+      "description": "Club sportif amateur d'Ultimate Frisbee et de Disc-Golf à Lyon et Villeurbanne. Fondé en 2001, ouvert à tous les niveaux.",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "70 Rue Docteur Rollet",
+        "addressLocality": "Villeurbanne",
+        "addressRegion": "Auvergne-Rhône-Alpes",
+        "postalCode": "69100",
+        "addressCountry": "FR"
+      },
+      "telephone": "+33666268408",
+      "email": "contact@asul-ultimate.org",
+      "priceRange": "Gratuit à 200€/an",
+      "openingHours": "Mo,Tu,We,Th,Fr,Sa,Su",
+      "geo": {
+        "@type": "GeoCoordinates",
+        "latitude": 45.774722,
+        "longitude": 4.872222
+      },
+      "sameAs": [
+        "https://www.facebook.com/AsulUltimateLyon/",
+        "https://www.instagram.com/lyon_asul_ultimate/",
+        "https://www.instagram.com/asulultimate/"
+      ]
+    }
+    </script>
+
+    <!-- Preconnect for performance -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+      rel="preconnect"
+      href="https://fonts.gstatic.com"
+      crossorigin="anonymous"
+    />
+
+    <!-- Sitemap -->
+    <link
+      rel="sitemap"
+      type="application/xml"
+      title="Sitemap"
+      href="/api/sitemap/"
+    />
+
+    <!-- RSS Feed -->
+    <link
+      rel="alternate"
+      type="application/rss+xml"
+      title="RSS Feed"
+      href="/api/rss/"
+    />
   </head>
   <body>
     <div id="root"></div>

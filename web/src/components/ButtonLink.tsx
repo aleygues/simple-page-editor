@@ -39,13 +39,18 @@ export function ButtonLink(props: {
   to: string;
   children: React.ReactNode;
   fill?: "clear" | "solid";
+  notActive?: boolean;
 }) {
   const location = useLocation();
 
   const isActive = useMemo(() => {
     const url = new URL(props.to, window.location.origin);
-    return props.to.startsWith("/") && location.pathname === url.pathname;
-  }, [location.pathname, props.to]);
+    return (
+      !props.notActive &&
+      props.to.startsWith("/") &&
+      location.pathname === url.pathname
+    );
+  }, [location.pathname, props.to, props.notActive]);
 
   return (
     <Component

@@ -1,5 +1,6 @@
 import { CronJob } from "cron";
 import { clearImagesCache } from "./jobs/clearImagesCache";
+import { cleanupRateLimiter } from "./jobs/cleanupRateLimiter";
 import { Logger } from "../utils/Logger";
 
 interface JobEntry {
@@ -13,6 +14,8 @@ class CronService {
   constructor() {
     // Register default jobs
     this.addJob("clearCache", "0 * * * *", () => clearImagesCache());
+    // Clean up rate limiter state every 15 minutes
+    this.addJob("cleanupRateLimiter", "*/15 * * * *", () => cleanupRateLimiter());
   }
 
   addJob(

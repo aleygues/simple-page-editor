@@ -1,6 +1,7 @@
 import { ButtonLink } from "./ButtonLink";
 import { CenteredContainer } from "./CenteredContainer";
 import { CenteredContent } from "./CenteredContent";
+import { ImageLink } from "./ImageLink";
 import { Page } from "./Page";
 import { Select } from "./Select";
 import { Toolbar } from "./Toolbar";
@@ -16,6 +17,7 @@ export const customComponents = {
   Banner,
   Page,
   ButtonLink,
+  ImageLink,
   CenteredContent,
   CenteredContainer,
   Container,

@@ -18,7 +18,7 @@ import {
 } from "typeorm";
 import { CreateInput, Input } from "../utils/Input";
 import * as argon2 from "argon2";
-import { addHours } from "date-fns";
+import { addHours, addMinutes } from "date-fns";
 import { randomBytes } from "crypto";
 
 export enum UserRole {
@@ -57,6 +57,20 @@ export class User extends BaseEntity {
   @IsEnum(UserRole)
   role: UserRole = UserRole.USER;
 
+  @Column({ default: 0 })
+  failedLoginAttempts: number = 0;
+
+  @Column({ nullable: true })
+  @IsDate()
+  @IsOptional()
+  lockedUntil?: Date;
+
+  @Column({ default: 5 })
+  maxLoginAttempts: number = 5;
+
+  @Column({ default: 15 })
+  lockoutDurationMinutes: number = 15;
+
   @CreateDateColumn()
   @IsDate()
   createdAt!: Date;
@@ -73,6 +87,33 @@ export class User extends BaseEntity {
     this.passwordTokenExpiresAt = expiresAt;
 
     return { token, expiresAt };
+  }
+
+  generatePasswordResetToken(): { token: string; expiresAt: Date } {
+    const token = randomBytes(32).toString("hex");
+    const expiresAt = addHours(new Date(), 1); // Reset tokens expire in 1 hour
+
+    this.passwordToken = token;
+    this.passwordTokenExpiresAt = expiresAt;
+
+    return { token, expiresAt };
+  }
+
+  isAccountLocked(): boolean {
+    if (!this.lockedUntil) return false;
+    return new Date() < this.lockedUntil;
+  }
+
+  recordFailedLogin(): void {
+    this.failedLoginAttempts++;
+    if (this.failedLoginAttempts >= this.maxLoginAttempts) {
+      this.lockedUntil = addMinutes(new Date(), this.lockoutDurationMinutes);
+    }
+  }
+
+  resetFailedLogins(): void {
+    this.failedLoginAttempts = 0;
+    this.lockedUntil = undefined;
   }
 }
 
@@ -111,6 +152,32 @@ export class UserTokenCreateInput extends CreateInput<User> {
     user.email = this.email;
     user.password = this.password;
 
+    return user;
+  }
+}
+
+// Input for requesting a password reset
+export class UserPasswordResetRequestInput extends Input<User> {
+  @IsEmail()
+  email!: string;
+
+  async getValidatedEntity(): Promise<User> {
+    const user = new User();
+    user.email = this.email;
+    return user;
+  }
+}
+
+// Input for setting a new password with reset token
+export class UserPasswordResetInput extends Input<User> {
+  @IsString()
+  passwordToken!: string; // Using passwordToken to match the existing validation system
+
+  @IsStrongPassword()
+  password!: string; // Using password to match the existing validation system
+
+  async getValidatedEntity(): Promise<User> {
+    const user = new User();
     return user;
   }
 }

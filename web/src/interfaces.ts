@@ -9,7 +9,10 @@ export interface Page {
   title: string;
   slug: string;
   description: string;
+  inSitemap: boolean;
   currentVersion: Version;
+  createdAt: string;
+  updatedAt: string;
 }
 
 export interface Component {
@@ -27,6 +30,9 @@ export interface Version {
 
 export interface Media {
   id: number;
+  name: string;
+  path: string;
+  mimetype: string;
   createdAt: string;
   createdBy: User;
 }

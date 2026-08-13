@@ -8,7 +8,7 @@ import { Image } from "../components/Image";
 import { Section } from "../components/Section";
 import { format } from "date-fns";
 import { Button } from "../components/Button";
-import { FiCheck } from "react-icons/fi";
+import { FiCheck, FiFile } from "react-icons/fi";
 import { Void } from "../components/Void";
 
 export function MediaModal(props: {
@@ -44,36 +44,76 @@ export function MediaModal(props: {
           <input {...getInputProps()} />
           <p>Drag 'n' drop some files here, or click to select files</p>
         </div>
-        {media?.map((media) => (
-          <Row>
-            <Image
-              src={`/api/media/${media.id}`}
-              width="100px"
-              height="100px"
-              fit="cover"
-              borderRadius
-            />
-            <div>
-              <h3>Media</h3>
-              <p>
-                Created by {media.createdBy.email} on{" "}
-                {format(new Date(media.createdAt), "PPP")}
-              </p>
-            </div>
-            <Void />
-            <Button
-              fill="clear"
-              onClick={() => {
-                if (props.onMediaSelect) {
-                  props.onMediaSelect(media);
-                }
-              }}
-            >
-              <FiCheck />
-              Use
-            </Button>
-          </Row>
-        ))}
+        {media?.map((media) => {
+          const isPdf = media.mimetype === "application/pdf";
+          return (
+            <Row key={media.id}>
+              {isPdf ? (
+                <div
+                  style={{
+                    width: "100px",
+                    height: "100px",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    backgroundColor: "var(--background-color)",
+                    borderRadius: "var(--border-radius)",
+                    border: "1px solid var(--border-color)",
+                  }}
+                >
+                  <FiFile
+                    style={{
+                      width: "48px",
+                      height: "48px",
+                      color: "var(--color-red)",
+                    }}
+                  />
+                </div>
+              ) : (
+                <Image
+                  src={`/api/media/${media.id}`}
+                  width="100px"
+                  height="100px"
+                  fit="cover"
+                  borderRadius
+                />
+              )}
+              <div className="truncate-container">
+                <p className="truncate">
+                  <strong>{media.name}</strong>
+                </p>
+                <p className="truncate">
+                  Created by {media.createdBy.email} on{" "}
+                  {format(new Date(media.createdAt), "PPP")}
+                </p>
+              </div>
+              <Void />
+              {props.onMediaSelect &&
+                (isPdf ? (
+                  <Button
+                    fill="clear"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      props.onMediaSelect?.(media);
+                    }}
+                  >
+                    <FiCheck />
+                    Use
+                  </Button>
+                ) : (
+                  <Button
+                    fill="clear"
+                    onClick={() => {
+                      props.onMediaSelect?.(media);
+                    }}
+                  >
+                    <FiCheck />
+                    Use
+                  </Button>
+                ))}
+            </Row>
+          );
+        })}
       </Section>
     </Modal>
   );

@@ -12,10 +12,38 @@ import {
   UpdateDateColumn,
 } from "typeorm";
 import { User } from "./User";
-import { Length, ValidateNested } from "class-validator";
+import { Length, ValidateNested, ValidationArguments, ValidatorConstraint, ValidatorConstraintInterface, registerDecorator } from "class-validator";
 import { Version } from "./Version";
 import { CreateInput, UpdateInput } from "../utils/Input";
 import { Relation } from "./Relation";
+
+@ValidatorConstraint({ name: "isValidReactComponentName", async: false })
+class IsValidReactComponentNameConstraint implements ValidatorConstraintInterface {
+  validate(value: string, args: ValidationArguments) {
+    if (!value) return true;
+    // Must start with uppercase letter, followed by letters, numbers, or hyphens
+    const pattern = /^[A-Z][a-zA-Z0-9-]*$/;
+    return pattern.test(value);
+  }
+
+  defaultMessage(args: ValidationArguments) {
+    return "Tag must start with an uppercase letter and contain only letters, numbers, and hyphens";
+  }
+}
+
+function IsValidReactComponentName(validationOptions?: any) {
+  return function (object: object, propertyName: string) {
+    registerDecorator({
+      target: object.constructor,
+      propertyName: propertyName,
+      options: validationOptions,
+      constraints: [],
+      validator: IsValidReactComponentNameConstraint,
+    });
+  };
+}
+
+export { IsValidReactComponentName };
 
 @Entity()
 export class Component extends BaseEntity {
@@ -24,6 +52,7 @@ export class Component extends BaseEntity {
 
   @Column({ unique: true })
   @Length(3, 255)
+  @IsValidReactComponentName()
   tag!: string;
 
   @OneToOne(() => Version, { nullable: true })
@@ -62,6 +91,7 @@ export class Component extends BaseEntity {
 
 export class ComponentCreateInput extends CreateInput<Component> {
   @Length(3, 255)
+  @IsValidReactComponentName()
   tag!: string;
 
   async getEntity(currentUser: User): Promise<Component> {
@@ -75,6 +105,7 @@ export class ComponentCreateInput extends CreateInput<Component> {
 
 export class ComponentUpdateInput extends UpdateInput<Component> {
   @Length(3, 255)
+  @IsValidReactComponentName()
   tag!: string;
 
   @ValidateNested()

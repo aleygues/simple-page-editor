@@ -5,6 +5,7 @@ import { PageTopbar } from "../components/PageTopbar";
 import type { Page } from "../interfaces";
 import { CenteredContent } from "../components/CenteredContent";
 import { MDXContent } from "../components/MDXContent";
+import { SEO } from "../components/SEO";
 
 export function PagePage() {
   const { pageSlug } = useParams();
@@ -24,18 +25,18 @@ export function PagePage() {
     fetchPage();
   }, [pageSlug]);
 
-  useEffect(() => {
-    if (page) {
-      document.title = page.title;
-    }
-  }, [page]);
-
   if (page === undefined) {
-    return <p>Loading</p>;
+    return (
+      <>
+        <SEO page={null} currentUrl={window.location.href} />
+        <p>Loading</p>
+      </>
+    );
   }
 
   return (
     <>
+      <SEO page={page} currentUrl={window.location.href} />
       <PageTopbar page={page} />
       {page ? (
         <MDXContent content={page.currentVersion.content} />

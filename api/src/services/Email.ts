@@ -115,6 +115,31 @@ class EmailService {
       },
     });
   }
+
+  /**
+   * Send a password reset email to a user
+   */
+  async sendPasswordResetEmail(email: string, token: string): Promise<void> {
+    const resetUrl = `${process.env.FRONTEND_URL || "http://localhost:5173"}/reset-password?token=${token}`;
+
+    // Log the reset token to terminal as requested
+    Logger.info("Password Reset", "Password reset token generated", {
+      email,
+      token,
+      resetUrl,
+    });
+
+    await this.sendEmail({
+      to: email,
+      subject: "Password Reset Request",
+      template: "password-reset",
+      props: {
+        resetUrl,
+        email,
+        token,
+      },
+    });
+  }
 }
 
 export const Email = EmailService.getInstance();

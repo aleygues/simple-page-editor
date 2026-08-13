@@ -134,12 +134,22 @@ body,
   padding: 0;
   height: 100%;
   overflow: hidden;
-}
-
-#root {
   display: flex;
   flex-direction: column;
-  height: 100%;
+}
+
+.truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.truncate-container {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  min-width: 0;
+  flex-shrink: 1;
 }
 
 .editor {

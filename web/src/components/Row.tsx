@@ -2,6 +2,7 @@ import { styled } from "@linaria/react";
 
 type Props = {
   center?: boolean;
+  autoColumn?: boolean;
 };
 
 export const Row = styled.div<Props>`
@@ -11,4 +12,8 @@ export const Row = styled.div<Props>`
   gap: var(--gap);
   align-items: center;
   justify-content: ${({ center }) => (center ? "center" : "flex-start")};
+
+  @media (max-width: 768px) {
+    flex-direction: ${({ autoColumn }) => (autoColumn ? "column" : "row")};
+  }
 `;

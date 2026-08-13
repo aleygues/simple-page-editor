@@ -13,6 +13,7 @@ const Blank = styled.div<{ index: number }>`
   height: 100%;
   background-color: rgba(0, 0, 0, 0.5);
   z-index: ${({ index }) => 1000 + index * 10};
+  cursor: pointer;
 `;
 
 const Container = styled.div<{ index: number }>`
@@ -78,7 +79,7 @@ export function Modal(props: {
   if (props.isOpen) {
     return (
       <>
-        <Blank index={index} />
+        <Blank index={index} onClick={props.onClose} />
         <Container index={index} className="modal">
           <Row>
             <h2>{props.title}</h2>

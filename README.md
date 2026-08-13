@@ -97,6 +97,19 @@ A modern, markdown-powered page editor with versioning, media management, and mu
 | `createdAt` | Date   | Upload timestamp  |
 | `createdBy` | User   | Uploader          |
 
+### Component
+
+| Field       | Type   | Description                |
+| ----------- | ------ | -------------------------- |
+| `id`        | number | Primary key                |
+| `tag`       | string | React component name (PascalCase, 3-255 chars) |
+| `createdAt` | Date   | Creation timestamp         |
+| `createdBy` | User   | Author of the component    |
+| `updatedAt` | Date   | Last update timestamp      |
+| `updatedBy` | User   | Last editor                |
+
+**Note:** Component tags must start with an uppercase letter and contain only letters, numbers, and hyphens.
+
 ### User
 
 | Field                    | Type   | Description                 |
@@ -104,10 +117,14 @@ A modern, markdown-powered page editor with versioning, media management, and mu
 | `id`                     | number | Primary key                 |
 | `email`                  | string | Unique email address        |
 | `password`               | string | SHA-256 hashed              |
-| `role`                   | enum   | USER                        | CONTRIBUTOR | ADMIN   |
-| `state`                  | enum   | pending                     | active      | blocked |
+| `role`                   | enum   | USER, CONTRIBUTOR, or ADMIN |
+| `state`                  | enum   | pending, active, or blocked |
 | `passwordToken`          | string | Reset token (optional)      |
 | `passwordTokenExpiresAt` | Date   | Token expiration (optional) |
+| `failedLoginAttempts`    | number | Failed login attempt counter |
+| `lockedUntil`            | Date   | Account lockout expiration  |
+| `maxLoginAttempts`       | number | Max attempts before lockout (default: 5) |
+| `lockoutDurationMinutes` | number | Lockout duration in minutes (default: 15) |
 
 ## API Endpoints
 
@@ -210,8 +227,9 @@ simple-page-editor/
 | `NODE_ENV`               | No       | development                   | Environment mode                                |
 | `DB_PATH`                | No       | ./app-data/db/database.sqlite | SQLite database path                            |
 | `UPLOADS_PATH`           | No       | ./uploads                     | File uploads directory                          |
-| `CACHE_PATH`             | No       | ./cache                       | Image cache directory                           |
+| `CACHE_PATH`             | No       | ./data/cache                  | Image cache directory                           |
 | `CACHE_DURATION`         | No       | 24                            | Cache duration in hours                         |
+| `MAX_CACHE_SIZE_BYTES`  | No       | 1073741824 (1 GB)             | Maximum cache directory size in bytes           |
 | `LOG_LEVEL`              | No       | INFO                          | Logging level (ERROR, WARN, INFO, DEBUG)        |
 | `ACCESS_TOKEN_DURATION`  | No       | 15m                           | Access token validity duration                  |
 | `REFRESH_TOKEN_DURATION` | No       | 7d                            | Refresh token validity duration                 |
@@ -327,13 +345,27 @@ yarn build
 
 ## Security Features
 
-- **Password Hashing**: All passwords are hashed with SHA-256
+- **Password Hashing**: All passwords are hashed with Argon2 (SHA-256 compatible)
 - **JWT Authentication**: Secure token-based authentication
-- **Role-Based Access Control**: Fine-grained permissions
+- **Role-Based Access Control**: Fine-grained permissions (User, Contributor, Admin)
 - **CSRF Protection**: Built-in Express protections
-- **Input Validation**: Class-validator for all inputs
+- **Input Validation**: Class-validator for all inputs with custom validators
 - **SQL Injection Prevention**: TypeORM parameterized queries
 - **Password Reset Tokens**: Time-limited, single-use tokens
+- **Rate Limiting**: Login attempts limited to 10 per 15 minutes per IP address
+- **Account Lockout**: Accounts locked for 15 minutes after 5 failed login attempts
+- **Security Headers**: Multiple HTTP security headers (X-Frame-Options, CSP, HSTS, etc.)
+- **No Email Enumeration**: Generic error messages prevent user enumeration
+- **Timing Attack Protection**: Argon2 verify is timing-attack safe
+- **Audit Logging**: All login attempts logged with IP and user agent
+
+### Component Tag Validation
+
+Component tags are validated to ensure they follow React naming conventions:
+- Must start with an uppercase letter (PascalCase)
+- Can only contain letters, numbers, and hyphens
+- Minimum length: 3 characters
+- Maximum length: 255 characters
 
 ## Performance Optimizations
 
@@ -343,6 +375,15 @@ yarn build
 - **Cron Jobs**: Scheduled cache cleanup
 - **Zero-Runtime CSS**: Linaria compiles styles at build time
 - **Code Splitting**: Vite automatic code splitting
+
+### Cache Management
+
+The image cache has automatic size management:
+- **Maximum Cache Size**: Configurable via `MAX_CACHE_SIZE_BYTES` (default: 1 GB)
+- **Automatic Cleanup**: When cache reaches 90% of max size, oldest files are deleted
+- **Scheduled Cleanup**: CRON job runs hourly to remove files older than `CACHE_DURATION`
+- **Dual Cleanup Strategy**: Both age-based and size-based cleanup ensure cache stays within limits
+- **Oldest First**: When cleaning up by size, oldest files are deleted first (by creation time)
 
 ## License
 

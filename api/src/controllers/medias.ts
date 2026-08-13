@@ -5,9 +5,10 @@ import { Media } from "../entities/Media";
 import sharp, { FitEnum } from "sharp";
 import { format } from "date-fns";
 import { transformImage } from "../utils/transformImage";
-import { mkdirSync } from "fs";
+import { mkdirSync, writeFileSync } from "fs";
 import { Logger } from "../utils/Logger";
 import { User } from "../entities/User";
+import path from "path";
 
 const uploadPath = process.env.UPLOADS_PATH || "./app-data/uploads";
 mkdirSync(uploadPath, { recursive: true });
@@ -23,22 +24,30 @@ class MediasController {
       return sendError(res, 400, "missing file", ["No file uploaded"]);
     }
 
-    const newFilename = `${format(new Date(), "yyyy-MM-dd_HH-mm-ss_SSS")}.webp`;
+    const mimetype = req.file.mimetype;
+    const ext = path.extname(req.file.originalname).toLowerCase();
+    const newFilename = `${format(new Date(), "yyyy-MM-dd_HH-mm-ss_SSS")}${ext}`;
     const newPath = `${uploadPath}/${newFilename}`;
 
-    await sharp(req.file.buffer)
-      .resize({
-        width: 3840,
-        height: 2060,
-        fit: "inside",
-        withoutEnlargement: true,
-      })
-      .toFile(newPath);
+    // Handle PDFs - save as-is without image processing
+    if (mimetype === "application/pdf") {
+      writeFileSync(newPath, req.file.buffer);
+    } else {
+      // Process images with sharp
+      await sharp(req.file.buffer)
+        .resize({
+          width: 3840,
+          height: 2060,
+          fit: "inside",
+          withoutEnlargement: true,
+        })
+        .toFile(newPath);
+    }
 
     const newMedia = new Media();
     newMedia.name = req.file.originalname;
     newMedia.path = newPath;
-    newMedia.mimetype = "image/webp";
+    newMedia.mimetype = mimetype;
     newMedia.createdBy = req.user as User;
     console.log(newMedia);
     await newMedia.save();
@@ -82,6 +91,19 @@ class MediasController {
       Logger.warn("medias", "Media not found", { id: fileId });
       return sendError(res, 404, "not found", ["Media not found"]);
     }
+
+    // Handle PDFs - serve directly without transformation
+    if (media.mimetype === "application/pdf") {
+      Logger.info("medias", "PDF retrieved", { id: fileId });
+      return res.sendFile(media.path, {
+        headers: {
+          "Content-Type": "application/pdf",
+          "Content-Disposition": `inline; filename="${encodeURIComponent(media.name)}"`,
+        },
+        root: process.cwd(),
+      });
+    }
+
     console.log(req.query);
     const width = req.query.width ? Number(req.query.width) : undefined;
     const height = req.query.height ? Number(req.query.height) : undefined;

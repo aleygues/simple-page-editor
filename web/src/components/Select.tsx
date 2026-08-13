@@ -8,6 +8,7 @@ export const Select = styled.select<{ fill?: "clear" | "solid" }>`
   padding: var(--input-padding);
   font-family: var(--input-font-family);
   font-size: var(--input-font-size);
+  color: var(--button-background-color);
 
   &:hover,
   &:focus {

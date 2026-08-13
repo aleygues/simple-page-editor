@@ -40,6 +40,9 @@ export class Page extends BaseEntity {
   @MinLength(3)
   description?: string;
 
+  @Column({ default: true })
+  inSitemap!: boolean;
+
   @OneToOne(() => Version, { nullable: true })
   @JoinColumn()
   currentVersion!: Version;
@@ -85,12 +88,16 @@ export class PageCreateInput extends CreateInput<Page> {
   @MinLength(3)
   description?: string;
 
+  @IsOptional()
+  inSitemap?: boolean;
+
   async getEntity(currentUser: User): Promise<Page> {
     const newPage = new Page();
     newPage.title = this.title;
     newPage.description = this.description;
     newPage.slug = await getUniqueSlug(this.slug || this.title);
     newPage.description = this.description;
+    newPage.inSitemap = this.inSitemap ?? true;
     newPage.createdBy = currentUser;
     newPage.updatedBy = currentUser;
     return newPage;
@@ -107,6 +114,9 @@ export class PageUpdateInput extends UpdateInput<Page> {
   @MinLength(3)
   description?: string;
 
+  @IsOptional()
+  inSitemap?: boolean;
+
   @ValidateNested()
   currentVersion!: Relation;
 
@@ -115,6 +125,10 @@ export class PageUpdateInput extends UpdateInput<Page> {
 
     if (this.slug && this.slug !== previousEntity.slug) {
       previousEntity.slug = await getUniqueSlug(this.slug);
+    }
+
+    if (this.inSitemap !== undefined) {
+      previousEntity.inSitemap = this.inSitemap;
     }
 
     previousEntity.updatedBy = currentUser;

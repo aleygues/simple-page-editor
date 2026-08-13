@@ -5,6 +5,8 @@ import { Logger } from "./utils/Logger";
 import { Websockets } from "./services/Websockets";
 import { apiRouter } from "./api";
 import { sendError } from "./utils/sendError";
+import { securityHeaders } from "./middlewares/security";
+import { cors } from "./middlewares/cors";
 import { User, UserRole } from "./entities/User";
 import { datasource } from "./datasource";
 import * as argon2 from "argon2";
@@ -45,6 +47,13 @@ async function main() {
     // Prepare express API
     const app = express();
     app.use(express.json());
+    
+    // Apply CORS middleware before security headers
+    app.use(cors);
+    
+    // Apply security headers to all requests
+    app.use(securityHeaders);
+    
     app.use("/api", apiRouter);
 
     // Serve static website from public folder if it exists (Vite/React app)

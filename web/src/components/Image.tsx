@@ -1,6 +1,6 @@
 import { styled } from "@linaria/react";
 
-type Props = {
+export type ImageProps = {
   src: string;
   alt?: string;
   width?: string;
@@ -9,7 +9,7 @@ type Props = {
   borderRadius?: boolean;
 };
 
-const Img = styled.img<Props>`
+const Img = styled.img<ImageProps>`
   object-fit: ${({ fit }) => (fit ? `${fit}` : "initial")};
   width: ${({ width }) => (width ? `${width}` : "auto")};
   height: ${({ height }) => (height ? `${height}` : "auto")};
@@ -18,7 +18,7 @@ const Img = styled.img<Props>`
   overflow: hidden;
 `;
 
-export function Image(props: Props) {
+export function Image(props: ImageProps) {
   const params: string[] = [];
   if (props.width) {
     params.push(`width=${props.width}`);
