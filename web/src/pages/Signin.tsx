@@ -7,7 +7,7 @@ import toast from "react-hot-toast";
 import { CenteredContainer } from "../components/CenteredContainer";
 import { Label } from "../components/Label";
 import { useMe } from "../hooks/me.hook";
-import { useNavigate, Link } from "react-router";
+import { useNavigate } from "react-router";
 import { SEO } from "../components/SEO";
 import { useState } from "react";
 
@@ -34,7 +34,9 @@ export function SigninPage() {
     }
   }
 
-  async function onRequestPasswordReset(event: React.SubmitEvent<HTMLFormElement>) {
+  async function onRequestPasswordReset(
+    event: React.SubmitEvent<HTMLFormElement>,
+  ) {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
     const email = formData.get("email");
@@ -49,7 +51,9 @@ export function SigninPage() {
       await axios.post("/api/users/tokens/reset", {
         email,
       });
-      toast.success("If an account exists with this email, a password reset link has been sent. Check your email (or terminal logs for the reset token).");
+      toast.success(
+        "If an account exists with this email, a password reset link has been sent. Check your email (or terminal logs for the reset token).",
+      );
     } catch (error) {
       toast.error("Failed to request password reset. Please try again.");
     } finally {
@@ -59,8 +63,8 @@ export function SigninPage() {
 
   return (
     <Page>
-      <SEO 
-        page={null} 
+      <SEO
+        page={null}
         currentUrl={window.location.href}
         defaultTitle="Sign In - ASUL Ultimate Website"
         defaultDescription="Sign in to access the page editor and manage your MDX content"
@@ -69,7 +73,7 @@ export function SigninPage() {
       <CenteredContainer>
         <h1>Sign in</h1>
         <p>You can sign in to edit website content</p>
-        
+
         <Form onSubmit={onSubmit}>
           <Label>
             Email:
@@ -86,10 +90,10 @@ export function SigninPage() {
         </Form>
 
         <hr style={{ margin: "20px 0" }} />
-        
+
         <h2>Forgot Password?</h2>
         <p>Enter your email to receive a password reset link.</p>
-        
+
         <Form onSubmit={onRequestPasswordReset}>
           <Label>
             Email:

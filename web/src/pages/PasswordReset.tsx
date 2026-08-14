@@ -20,7 +20,9 @@ export function PasswordResetPage() {
 
   useEffect(() => {
     if (!token) {
-      toast.error("No reset token provided. Please request a new password reset link.");
+      toast.error(
+        "No reset token provided. Please request a new password reset link.",
+      );
       navigate("/signin");
     }
   }, [token, navigate]);
@@ -49,12 +51,14 @@ export function PasswordResetPage() {
         passwordToken: token,
         password: newPassword,
       });
-      
-      toast.success("Password has been reset successfully! You can now sign in with your new password.");
+
+      toast.success(
+        "Password has been reset successfully! You can now sign in with your new password.",
+      );
       navigate("/signin");
-    } catch (error) {
-      const message = error instanceof Error && error.response?.data?.message 
-        ? error.response.data.message 
+    } catch (error: any) {
+      const message = error?.response?.data?.message
+        ? error.response.data.message
         : "Failed to reset password. The reset token may have expired.";
       toast.error(message);
       navigate("/signin");
@@ -66,8 +70,8 @@ export function PasswordResetPage() {
   if (!token) {
     return (
       <Page>
-        <SEO 
-          page={null} 
+        <SEO
+          page={null}
           currentUrl={window.location.href}
           defaultTitle="Password Reset - ASUL Ultimate Website"
           defaultDescription="Reset your password"
@@ -75,7 +79,9 @@ export function PasswordResetPage() {
         />
         <CenteredContainer>
           <h1>Password Reset</h1>
-          <p>No reset token provided. Please request a new password reset link.</p>
+          <p>
+            No reset token provided. Please request a new password reset link.
+          </p>
           <Button onClick={() => navigate("/signin")} fill="solid">
             Return to Sign In
           </Button>
@@ -86,8 +92,8 @@ export function PasswordResetPage() {
 
   return (
     <Page>
-      <SEO 
-        page={null} 
+      <SEO
+        page={null}
         currentUrl={window.location.href}
         defaultTitle="Password Reset - ASUL Ultimate Website"
         defaultDescription="Reset your password"
@@ -96,13 +102,13 @@ export function PasswordResetPage() {
       <CenteredContainer>
         <h1>Reset Your Password</h1>
         <p>Enter your new password below.</p>
-        
+
         <Form onSubmit={onSubmit}>
           <Label>
             New Password:
-            <Input 
-              name="newPassword" 
-              type="password" 
+            <Input
+              name="newPassword"
+              type="password"
               value={newPassword}
               onChange={(e) => setNewPassword(e.target.value)}
               minLength={8}
@@ -112,16 +118,16 @@ export function PasswordResetPage() {
 
           <Label>
             Confirm New Password:
-            <Input 
-              name="confirmPassword" 
-              type="password" 
+            <Input
+              name="confirmPassword"
+              type="password"
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
               minLength={8}
               required
             />
           </Label>
-          
+
           <Button type="submit" fill="solid" disabled={isSubmitting}>
             {isSubmitting ? "Resetting..." : "Reset Password"}
           </Button>
