@@ -15,10 +15,12 @@ export async function updateToken(userId: number, req: Request, res: Response) {
 
   const cookies = new Cookies(req, res);
   // Check if the request is secure (HTTPS) - in production, only set secure flag if using HTTPS
+  // For reverse proxies (like Traefik, Nginx), check X-Forwarded-Proto and X-Forwarded-Ssl headers
   const isSecureConnection = 
     req.secure || 
-    (req.headers["x-forwarded-proto"] === "https") ||
-    (req.headers["x-forwarded-scheme"] === "https");
+    (req.headers["x-forwarded-proto"]?.toString().toLowerCase() === "https") ||
+    (req.headers["x-forwarded-scheme"]?.toString().toLowerCase() === "https") ||
+    (req.headers["x-forwarded-ssl"]?.toString().toLowerCase() === "on");
   
   const cookieOptions = {
     httpOnly: true,

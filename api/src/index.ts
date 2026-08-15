@@ -46,6 +46,11 @@ async function main() {
 
     // Prepare express API
     const app = express();
+    
+    // Trust proxy headers when running behind a reverse proxy (Traefik, Nginx, etc.)
+    // This is needed for req.secure, req.headers['x-forwarded-proto'], etc. to work correctly
+    app.set('trust proxy', true);
+    
     app.use(express.json());
 
     // Apply CORS middleware before security headers
