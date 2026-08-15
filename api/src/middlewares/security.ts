@@ -40,10 +40,10 @@ export function securityHeaders(
   // Content Security Policy
   // Allow scripts from self, style from self and unsafe-inline (for CSS-in-JS)
   // Allow images from self and data:
-  // Allow connections to localhost ports for development
+  // Allow unsafe-eval for MDX which requires it for dynamic code evaluation
   res.setHeader(
     "Content-Security-Policy",
-    "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' http://localhost:* http://127.0.0.1:*; frame-ancestors 'none'; form-action 'self';",
+    "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self' data:; connect-src 'self'; frame-ancestors 'none'; form-action 'self';",
   );
 
   next();

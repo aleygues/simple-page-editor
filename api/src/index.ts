@@ -53,13 +53,12 @@ async function main() {
     
     app.use(express.json());
 
-    // Apply CORS middleware before security headers
+    // Apply CORS middleware to all requests
     app.use(cors);
 
-    // Apply security headers to all requests
-    app.use(securityHeaders);
-
-    app.use("/api", apiRouter);
+    // Apply security headers only to API routes (not static files)
+    // This is important because the web app (served from /public) needs its own CSP
+    app.use("/api", securityHeaders, apiRouter);
 
     // Serve static website from public folder if it exists (Vite/React app)
     const publicPath = path.join(__dirname, "..", "public");
