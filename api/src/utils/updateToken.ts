@@ -14,9 +14,15 @@ export async function updateToken(userId: number, req: Request, res: Response) {
   });
 
   const cookies = new Cookies(req, res);
+  // Check if the request is secure (HTTPS) - in production, only set secure flag if using HTTPS
+  const isSecureConnection = 
+    req.secure || 
+    (req.headers["x-forwarded-proto"] === "https") ||
+    (req.headers["x-forwarded-scheme"] === "https");
+  
   const cookieOptions = {
     httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
+    secure: process.env.NODE_ENV === "production" && isSecureConnection,
     sameSite: "strict" as const,
   };
 

@@ -47,13 +47,13 @@ async function main() {
     // Prepare express API
     const app = express();
     app.use(express.json());
-    
+
     // Apply CORS middleware before security headers
     app.use(cors);
-    
+
     // Apply security headers to all requests
     app.use(securityHeaders);
-    
+
     app.use("/api", apiRouter);
 
     // Serve static website from public folder if it exists (Vite/React app)
@@ -63,7 +63,6 @@ async function main() {
 
       // For SPA routing: serve index.html for all unmatched routes
       app.get("*all", (req, res) => {
-        console.log("HEE");
         res.sendFile(path.join(publicPath, "index.html"));
       });
     } else {

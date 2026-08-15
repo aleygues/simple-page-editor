@@ -16,15 +16,23 @@ import { Logger } from "./Logger";
  */
 function freeUpCacheSpace(targetSize: number): void {
   try {
-    const files = fs.readdirSync(CACHE_PATH).map((file) => {
-      const filePath = path.join(CACHE_PATH, file);
-      try {
-        const stats = fs.statSync(filePath);
-        return { file, filePath, birthtimeMs: stats.birthtimeMs, size: stats.size };
-      } catch {
-        return null;
-      }
-    }).filter((f): f is NonNullable<typeof f> => f !== null);
+    const files = fs
+      .readdirSync(CACHE_PATH)
+      .map((file) => {
+        const filePath = path.join(CACHE_PATH, file);
+        try {
+          const stats = fs.statSync(filePath);
+          return {
+            file,
+            filePath,
+            birthtimeMs: stats.birthtimeMs,
+            size: stats.size,
+          };
+        } catch {
+          return null;
+        }
+      })
+      .filter((f): f is NonNullable<typeof f> => f !== null);
 
     // Sort by oldest first (birthtime)
     files.sort((a, b) => a.birthtimeMs - b.birthtimeMs);
@@ -77,11 +85,15 @@ export async function transformImage(args: {
     const thresholdSize = MAX_CACHE_SIZE_BYTES * CACHE_CLEANUP_THRESHOLD;
 
     if (cacheSize >= thresholdSize) {
-      Logger.warn("transformImage", "Cache near capacity, cleaning up old files", {
-        currentSize: cacheSize,
-        maxSize: MAX_CACHE_SIZE_BYTES,
-        threshold: thresholdSize,
-      });
+      Logger.warn(
+        "transformImage",
+        "Cache near capacity, cleaning up old files",
+        {
+          currentSize: cacheSize,
+          maxSize: MAX_CACHE_SIZE_BYTES,
+          threshold: thresholdSize,
+        },
+      );
       freeUpCacheSpace(MAX_CACHE_SIZE_BYTES * 0.8); // Free up to 80% of max
     }
 
@@ -96,7 +108,12 @@ export async function transformImage(args: {
     }
 
     await sharp(args.path)
-      .resize({ width: args.width, height: args.height, fit: args.fit })
+      .resize({
+        width: args.width,
+        height: args.height,
+        fit: args.fit,
+        position: "center",
+      })
       .toFile(imageCachePath);
 
     return imageCachePath;
